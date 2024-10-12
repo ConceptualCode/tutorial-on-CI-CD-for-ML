@@ -1,0 +1,40 @@
+stages:
+  preprocess:
+    cmd: python data_preprocess.py --input-dir data/raw/shmuhammad_AfriSenti-twitter-sentiment
+      --output-dir preprocessed
+    deps:
+    - data/raw/shmuhammad_AfriSenti-twitter-sentiment
+    - data_preprocess.py
+    outs:
+    - preprocessed
+  hyperparameter_search:
+    cmd: python hp_search.py --data_dir preprocessed --model_name DSNResearch/IgboBERTa
+      --best_params_file best_params.json --n_trials 2 --lr_range 1e-5,1e-5 --epoch_range
+      1,1 --batch_sizes 8
+    deps:
+    - hp_search.py
+    - preprocessed/train.csv
+    - preprocessed/val.csv
+    outs:
+    - best_params.json
+    - pm_search
+  training:
+    cmd: python train.py --data_dir preprocessed --model_name DSNResearch/IgboBERTa
+      --output_dir model_output --best_params_file best_params.json
+    deps:
+    - best_params.json
+    - preprocessed/test.csv
+    - preprocessed/train.csv
+    - preprocessed/val.csv
+    - train.py
+    outs:
+    - model_output
+  evaluation:
+    cmd: python evaluation.py --data_dir preprocessed --model_checkpoint model_output
+      --output_dir metric_dir
+    deps:
+    - evaluation.py
+    - model_output
+    - preprocessed/test.csv
+    outs:
+    - metric_dir
