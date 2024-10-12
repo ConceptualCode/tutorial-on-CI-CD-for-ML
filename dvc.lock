@@ -19,3 +19,30 @@ stages:
       md5: 25ab389ed5f86522e1dd66d809a1a733.dir
       size: 825041
       nfiles: 3
+  hyperparameter_search:
+    cmd: python hp_search.py --data_dir preprocessed --model_name DSNResearch/IgboBERTa
+      --best_params_file best_params.json --n_trials 2 --lr_range 1e-5,1e-5 --epoch_range
+      1,1 --batch_sizes 8
+    deps:
+    - path: hp_search.py
+      hash: md5
+      md5: b7b20f4765fbcf8b9ee9efb644064b3d
+      size: 4300
+    - path: preprocessed/train.csv
+      hash: md5
+      md5: 9e29377a2b380f4e6668134e1635bff2
+      size: 533702
+    - path: preprocessed/val.csv
+      hash: md5
+      md5: f0bbe352ca21281f3bf58e37e73252b9
+      size: 96259
+    outs:
+    - path: best_params.json
+      hash: md5
+      md5: 042dfd85e6ec7d14de870a6562786eeb
+      size: 75
+    - path: pm_search
+      hash: md5
+      md5: af216eab93744bde6fe3c0ec9cfaab41.dir
+      size: 1003142383
+      nfiles: 11
