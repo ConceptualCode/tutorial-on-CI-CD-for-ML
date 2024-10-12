@@ -1,0 +1,21 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python data_preprocess.py --input-dir data/raw/shmuhammad_AfriSenti-twitter-sentiment
+      --output-dir preprocessed
+    deps:
+    - path: data/raw/shmuhammad_AfriSenti-twitter-sentiment
+      hash: md5
+      md5: c4a239495656254b200ab85979658528.dir
+      size: 1144819
+      nfiles: 3
+    - path: data_preprocess.py
+      hash: md5
+      md5: 150f0201c7419fae85c96d3a298f5e28
+      size: 3002
+    outs:
+    - path: preprocessed
+      hash: md5
+      md5: 25ab389ed5f86522e1dd66d809a1a733.dir
+      size: 825041
+      nfiles: 3
