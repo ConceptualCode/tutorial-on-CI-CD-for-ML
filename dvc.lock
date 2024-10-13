@@ -6,8 +6,8 @@ stages:
     deps:
     - path: data/raw/shmuhammad_AfriSenti-twitter-sentiment
       hash: md5
-      md5: c4a239495656254b200ab85979658528.dir
-      size: 1144819
+      md5: 000a82c6e73e1156f06d38e3aeb80bb9.dir
+      size: 1144831
       nfiles: 3
     - path: data_preprocess.py
       hash: md5
@@ -16,8 +16,8 @@ stages:
     outs:
     - path: preprocessed
       hash: md5
-      md5: 25ab389ed5f86522e1dd66d809a1a733.dir
-      size: 825041
+      md5: 328fb2b59c0bdcc2f904004471a6f708.dir
+      size: 825053
       nfiles: 3
   hyperparameter_search:
     cmd: python hp_search.py --data_dir preprocessed --model_name DSNResearch/IgboBERTa
@@ -30,8 +30,8 @@ stages:
       size: 4300
     - path: preprocessed/train.csv
       hash: md5
-      md5: 9e29377a2b380f4e6668134e1635bff2
-      size: 533702
+      md5: 301d19e7d3eebc8f00ad038d09f1eb59
+      size: 533714
     - path: preprocessed/val.csv
       hash: md5
       md5: f0bbe352ca21281f3bf58e37e73252b9
@@ -43,6 +43,59 @@ stages:
       size: 75
     - path: pm_search
       hash: md5
-      md5: af216eab93744bde6fe3c0ec9cfaab41.dir
+      md5: 82723be8040fdea0acb51dbc3fe790b0.dir
       size: 1003142383
       nfiles: 11
+  training:
+    cmd: python train.py --data_dir preprocessed --model_name DSNResearch/IgboBERTa
+      --output_dir model_output --best_params_file best_params.json
+    deps:
+    - path: best_params.json
+      hash: md5
+      md5: 042dfd85e6ec7d14de870a6562786eeb
+      size: 75
+    - path: preprocessed/test.csv
+      hash: md5
+      md5: b442abff3ef82b41d3ae88f2554f1112
+      size: 195080
+    - path: preprocessed/train.csv
+      hash: md5
+      md5: 301d19e7d3eebc8f00ad038d09f1eb59
+      size: 533714
+    - path: preprocessed/val.csv
+      hash: md5
+      md5: f0bbe352ca21281f3bf58e37e73252b9
+      size: 96259
+    - path: train.py
+      hash: md5
+      md5: 8880d85636b8137137ad216ca40d5a69
+      size: 4035
+    outs:
+    - path: model_output
+      hash: md5
+      md5: 0e733bd560ea046570e978874f5a0da2.dir
+      size: 1338569038
+      nfiles: 19
+  evaluation:
+    cmd: python evaluation.py --data_dir preprocessed --model_checkpoint model_output/checkpoint-637
+      --output_dir metric_dir
+    deps:
+    - path: evaluation.py
+      hash: md5
+      md5: 25ccf07049d9cc9cc44c61ee275751b1
+      size: 2766
+    - path: model_output/checkpoint-637
+      hash: md5
+      md5: c51aad529f43a2ec64ad144f86ede336.dir
+      size: 1003142614
+      nfiles: 11
+    - path: preprocessed/test.csv
+      hash: md5
+      md5: b442abff3ef82b41d3ae88f2554f1112
+      size: 195080
+    outs:
+    - path: metric_dir
+      hash: md5
+      md5: 79ddfb5289363111aed558563b792e9a.dir
+      size: 306
+      nfiles: 1
