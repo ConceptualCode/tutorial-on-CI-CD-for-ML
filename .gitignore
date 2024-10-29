@@ -1,0 +1,8 @@
+/pm_search/
+/best_hyperparameters.json
+/best_params/
+/model_output/
+/.dvc/
+/myenv/
+/tmp_trainer/
+/__pycache__/

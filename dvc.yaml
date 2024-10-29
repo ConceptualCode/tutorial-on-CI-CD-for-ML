@@ -30,11 +30,11 @@ stages:
     outs:
     - model_output
   evaluation:
-    cmd: python evaluation.py --data_dir preprocessed --model_checkpoint model_output
+    cmd: python evaluation.py --data_dir preprocessed --model_checkpoint model_output/checkpoint-637
       --output_dir metric_dir
     deps:
     - evaluation.py
-    - model_output
+    - model_output/checkpoint-637
     - preprocessed/test.csv
     outs:
     - metric_dir

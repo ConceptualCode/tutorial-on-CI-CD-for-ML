@@ -1,0 +1,5 @@
+[core]
+    remote = mys3
+['remote "mys3"']
+    url = s3://cicdtutorials/data/
+    region = us-east-1
